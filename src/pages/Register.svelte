@@ -1,13 +1,23 @@
 <script>
     import * as yup from 'yup'
-    import {Link} from "svelte-navigator";
+    import {Link, useNavigate} from "svelte-navigator";
+    import RegisterMutation from '../graphql/RegisterMutation.graphql'
+    import {mutation} from "@urql/svelte";
+
+    const navigate = useNavigate()
+    const register = mutation({query: RegisterMutation})
 
     let email = ""
     let username = ""
     let password = ""
+    let loading = false
     let errors = null
+    let serverError = ""
 
-    $: if (email || username || password) errors = null
+    $: if (email || username || password) {
+        errors = null
+        serverError = ""
+    }
 
     const registerSchema = yup.object().shape({
         email: yup.string().email().required(),
@@ -16,22 +26,41 @@
     })
 
     const submitForm = async () => {
-        registerSchema.validate({username, password, email}, {abortEarly: false}).then(() => {
-            console.log('pass')
+        loading = true
+        registerSchema.validate({username, password, email}, {abortEarly: false}).then(async () => {
+            const result = await register({username, password, email})
+            loading = false
+            if (result.error) {
+                serverError = "Error occurred."
+                return
+            }
+            navigate('/login')
         }).catch((e) => {
-            errors = e.inner.map(_e => _e.path)
+            loading = false
+            if (e.inner) {
+                errors = e.inner.map(_e => _e.path)
+            } else {
+                serverError = "Error occurred."
+            }
         })
     }
 
 </script>
 
 <div class="container full-height">
-    <div class="columns is-vcentered full-height">
-        <div class="column is-6 is-offset-3">
+    <div class="columns mt-0 is-vcentered full-height">
+        <div class="column is-4 is-offset-4">
             <div class="box">
                 <div class="content">
                     <h1 class="is-size-4">Welcome to Twitter</h1>
                     <p>Please register before continuing to use Twitter.</p>
+                    {#if serverError}
+                        <div class="message is-danger">
+                            <p class="message-body">
+                                {serverError}
+                            </p>
+                        </div>
+                    {/if}
                     <form on:submit|preventDefault={submitForm}>
                         <div class="field">
                             <label class="label">Email</label>
@@ -77,7 +106,8 @@
                                 <Link class="has-text-info" to="/login">Login here.</Link>
                             </p>
                         </div>
-                        <button type="submit" class="button is-primary mt-2">Register</button>
+                        <button type="submit" class="button is-primary mt-2" class:is-loading={loading}>Register
+                        </button>
                     </form>
                 </div>
             </div>
