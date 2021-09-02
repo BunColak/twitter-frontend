@@ -4,9 +4,14 @@
     import RegisterMutation from '../graphql/RegisterMutation.graphql'
     import {mutation} from "@urql/svelte";
     import FullScreenCenteredBox from "../components/FullScreenCenteredBox.svelte";
+    import {user} from "../stores/userStore";
 
     const navigate = useNavigate()
     const register = mutation({query: RegisterMutation})
+
+    $: if ($user) {
+        navigate('/')
+    }
 
     let email = ""
     let username = ""

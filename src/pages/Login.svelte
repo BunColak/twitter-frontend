@@ -5,9 +5,15 @@
     import FullScreenCenteredBox from "../components/FullScreenCenteredBox.svelte";
     import {mutation} from "@urql/svelte";
     import Input from "../components/Input.svelte";
+    import {user} from "../stores/userStore";
+
 
     const navigate = useNavigate()
     const login = mutation({query: LoginMutation})
+
+    $: if ($user) {
+        navigate('/')
+    }
 
     let username = ""
     let password = ""
@@ -27,26 +33,24 @@
 
     const submitForm = async () => {
         loading = true
-        try {
-            loginSchema.validate({username, password}, {abortEarly: false}).then(async () => {
-                const result = await login({username, password})
-                loading = false
-                if (result.error) {
-                    serverError = "Error occurred."
-                    return
-                }
-                navigate('/')
-            }).catch(e => {
-                loading = false
-                if (e.inner) {
-                    errors = e.inner.map(_e => _e.path)
-                } else {
-                    serverError = "Error occurred."
-                }
-            })
-        } catch (e) {
-
-        }
+        loginSchema.validate({username, password}, {abortEarly: false}).then(async () => {
+            const result = await login({username, password})
+            loading = false
+            if (result.error) {
+                serverError = "Error occurred."
+                return
+            }
+            localStorage.setItem('twitter-user', JSON.stringify(result.data.login))
+            user.set(result.data.login)
+            navigate('/')
+        }).catch(e => {
+            loading = false
+            if (e.inner) {
+                errors = e.inner.map(_e => _e.path)
+            } else {
+                serverError = "Error occurred."
+            }
+        })
     }
 
 </script>
