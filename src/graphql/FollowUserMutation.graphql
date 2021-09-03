@@ -1,7 +1,6 @@
-mutation FollowUserMutation($followId: Int!, $userId: Int!) {
+mutation FollowUserMutation($followId: Int!) {
   insert_users_users_one(object: {
     followed_id: $followId
-    follower_id: $userId
   }) {
     id
   }

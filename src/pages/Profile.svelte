@@ -4,11 +4,12 @@
     import {operationStore, query} from "@urql/svelte";
     import Tweet from "../components/Tweet.svelte";
     import {user} from "../stores/userStore";
+    import FollowToggleButton from "../components/FollowToggleButton.svelte";
 
     const params = useParams()
     const username = $params.username
 
-    const response = operationStore(ProfilePageQuery, {username, userId: $user.userId})
+    const response = operationStore(ProfilePageQuery, {username, userId: $user.userId}, {additionalTypenames: ['profile']})
     query(response)
     $: profile = $response.fetching || $response.error ? {} : $response.data.users[0]
 </script>
@@ -26,11 +27,7 @@
                 <div class="box is-shadowless">
                     <div class="block is-flex is-justify-content-space-between is-align-items-center">
                         <p class="mb-0">@{profile.username}</p>
-                        {#if profile.is_followed.aggregate.count === 0 && String(profile.id) !== $user.userId}
-                            <button class="button is-primary is-small">Follow</button>
-                        {:else if String(profile.id) !== $user.userId}
-                            <button class="button is-outlined is-small">Following!</button>
-                        {/if}
+                        <FollowToggleButton profile={profile} />
                     </div>
                     <div class="block">
                         <span class="label">{profile.total_followers.aggregate.count}</span>

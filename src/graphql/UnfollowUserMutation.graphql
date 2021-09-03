@@ -1,0 +1,5 @@
+mutation UnfollowUser($followId: Int!) {
+  delete_users_users(where: {followed_id: {_eq: $followId}}) {
+    affected_rows
+  }
+}
