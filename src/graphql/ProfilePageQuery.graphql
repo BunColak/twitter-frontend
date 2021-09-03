@@ -1,14 +1,24 @@
-query ProfilePageQuery($username: String!) {
-  users(where: {username: {_eq: $username}}) {
-    id
-    username
-  }
-  tweets(where: {user: {username: {_eq: $username}}}) {
-    id
-    content
-    created_at
-    user {
-      username
+query ProfilePageQuery($username: String!, $userId: Int!) {
+    users(where: {username: {_eq: $username}}) {
+        id
+        username
+        is_followed: followers_aggregate(where: {follower_id: {_eq:  $userId}}) {
+            aggregate {
+                count
+            }
+        }
+        total_followers: followers_aggregate {
+            aggregate {
+                count
+            }
+        }
+        tweets {
+            id
+            content
+            created_at
+            user {
+                username
+            }
+        }
     }
-  }
 }

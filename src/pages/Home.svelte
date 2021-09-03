@@ -18,7 +18,17 @@
                 {#if $pageData.fetching}
                     <progress class="progress is-small is-primary"></progress>
                 {:else}
-                    <h6 class="has-text-weight-bold">@{$pageData.data.users_by_pk.username}</h6>
+                    <p class="has-text-weight-bold">@{$pageData.data.users_by_pk.username}</p>
+                    <div class="level">
+                        <div class="level-item is-flex-direction-column">
+                            <span class="label">{$pageData.data.users_by_pk.total_followers.aggregate.count}</span>
+                            <span class="is-size-7">Followers</span>
+                        </div>
+                        <div class="level-item is-flex-direction-column">
+                            <span class="label">{$pageData.data.users_by_pk.total_following.aggregate.count}</span>
+                            <span class="is-size-7">Following</span>
+                        </div>
+                    </div>
                 {/if}
             </div>
         </div>

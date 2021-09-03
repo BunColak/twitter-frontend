@@ -1,13 +1,43 @@
 query HomePageQuery($userId: Int!) {
-  tweets(order_by: {id: desc}) {
-    id
-    content
-    created_at
-    user {
-      username
+    tweets(
+        order_by: {id: desc},
+        where: {
+            _or: [
+                {
+                    user: {
+                        followers: {
+                            follower_id: {
+                                _eq: $userId
+                            }
+                        }
+                    }
+                },
+                {
+                    user_id: {
+                        _eq: $userId
+                    }
+                }
+            ]
+        }
+    ) {
+        id
+        content
+        created_at
+        user {
+            username
+        }
     }
-  }
-  users_by_pk(id: $userId) {
-    username
-  }
+    users_by_pk(id: $userId) {
+        username
+        total_followers: followers_aggregate {
+            aggregate {
+                count
+            }
+        }
+        total_following: following_aggregate {
+            aggregate {
+                count
+            }
+        }
+    }
 }
