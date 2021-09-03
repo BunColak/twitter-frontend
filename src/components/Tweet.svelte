@@ -37,6 +37,6 @@
         <span class="icon">
             <i class:fas={likedState} class:far={!likedState} class="fa-heart has-text-danger"></i>
         </span>
-        <span>{likedCount || ""}</span>
+        <span><small>{likedCount || ""}</small></span>
     </div>
 </div>
