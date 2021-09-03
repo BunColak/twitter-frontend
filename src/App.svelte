@@ -2,12 +2,13 @@
     import 'bulma/css/bulma.min.css'
     import AppRouter from "./router/AppRouter.svelte";
     import {initClient} from "@urql/svelte";
+    import {user} from "./stores/userStore";
 
     initClient({
         url: 'https://twitter-mock.hasura.app/v1/graphql',
         fetchOptions: () => {
             const headers = {}
-            //if ($user?.token) headers['authorization'] = `Bearer ${$user.token}`
+            if ($user?.token) headers['authorization'] = `Bearer ${$user.token}`
             return {
                 headers
             };

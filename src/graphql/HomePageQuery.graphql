@@ -1,0 +1,13 @@
+query HomePageQuery($userId: Int!) {
+  tweets {
+    id
+    content
+    created_at
+    user {
+      username
+    }
+  }
+  users_by_pk(id: $userId) {
+    username
+  }
+}
