@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>Home</title>
+</svelte:head>
+
 <script>
     import {operationStore, query} from "@urql/svelte";
     import HomePageQuery from '../graphql/HomePageQuery.graphql'

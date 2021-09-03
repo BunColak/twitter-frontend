@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>@{username}</title>
+</svelte:head>
+
 <script>
     import {useParams} from "svelte-navigator";
     import ProfilePageQuery from '../graphql/ProfilePageQuery.graphql'

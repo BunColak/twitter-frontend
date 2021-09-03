@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>Register</title>
+</svelte:head>
+
 <script>
     import * as yup from 'yup'
     import {Link, useNavigate} from "svelte-navigator";
