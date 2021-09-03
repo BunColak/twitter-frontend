@@ -1,0 +1,5 @@
+mutation dislikeMutation($tweetId: Int!) {
+  delete_tweets_users__like(where: {tweet_id: {_eq: $tweetId}}) {
+    affected_rows
+  }
+}

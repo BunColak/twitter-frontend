@@ -24,6 +24,11 @@ query HomePageQuery($userId: Int!) {
         content
         created_at
         is_liked_by_user
+        likes_aggregate {
+            aggregate {
+                count
+            }
+        }
         user {
             username
         }

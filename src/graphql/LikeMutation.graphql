@@ -1,0 +1,5 @@
+mutation LikeMutation($tweetId: Int!) {
+  insert_tweets_users__like_one(object: {tweet_id: $tweetId}) {
+    id
+  }
+}

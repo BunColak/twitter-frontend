@@ -8,12 +8,18 @@ query ProfilePageQuery($username: String!) {
                 count
             }
         }
-        tweets {
+        tweets(order_by: {id: desc}) {
             id
             content
             created_at
+            is_liked_by_user
             user {
                 username
+            }
+            likes_aggregate {
+                aggregate {
+                    count
+                }
             }
         }
     }
