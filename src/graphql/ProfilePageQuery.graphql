@@ -1,0 +1,14 @@
+query ProfilePageQuery($username: String!) {
+  users(where: {username: {_eq: $username}}) {
+    id
+    username
+  }
+  tweets(where: {user: {username: {_eq: $username}}}) {
+    id
+    content
+    created_at
+    user {
+      username
+    }
+  }
+}
