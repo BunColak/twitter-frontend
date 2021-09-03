@@ -23,6 +23,7 @@ query HomePageQuery($userId: Int!) {
         id
         content
         created_at
+        is_liked_by_user
         user {
             username
         }

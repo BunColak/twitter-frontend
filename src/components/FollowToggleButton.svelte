@@ -9,12 +9,11 @@
     export let profile
     let loading = false
 
-    $: isFollowing = profile.is_followed.aggregate.count !== 0
     $: isMe = String(profile.id) === $user.userId
 
     const toggleFollow = async () => {
         loading = true
-        if (isFollowing) {
+        if (profile.is_following) {
             await unFollowUser({followId: profile.id}, {additionalTypenames: ['profile']})
         } else {
             await followUser({followId: profile.id}, {additionalTypenames: ['profile']})
@@ -24,8 +23,8 @@
 </script>
 
 {#if !isMe}
-    <button on:click={toggleFollow} class="button is-primary is-small" class:is-loading={loading} class:is-outlined={isFollowing}>
-        {#if !isFollowing}
+    <button on:click={toggleFollow} class="button is-primary is-small" class:is-loading={loading} class:is-outlined={profile.is_following}>
+        {#if !profile.is_following}
             Follow
         {:else}
             Following!

@@ -13,7 +13,7 @@
     const params = useParams()
     const username = $params.username
 
-    const response = operationStore(ProfilePageQuery, {username, userId: $user.userId}, {additionalTypenames: ['profile']})
+    const response = operationStore(ProfilePageQuery, {username}, {additionalTypenames: ['profile']})
     query(response)
     $: profile = $response.fetching || $response.error ? {} : $response.data.users[0]
 </script>
