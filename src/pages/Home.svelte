@@ -4,6 +4,7 @@
     import HomePageQuery from '../graphql/HomePageQuery.graphql'
     import {user} from "../stores/userStore";
     import Tweet from "../components/Tweet.svelte";
+    import TweetInput from "../components/TweetInput.svelte";
 
     const pageData = operationStore(HomePageQuery, {userId: $user.userId})
 
@@ -22,6 +23,7 @@
             </div>
         </div>
         <div class="column is-4">
+            <TweetInput />
             {#if $pageData.fetching}
                 <progress class="progress is-small is-primary"></progress>
             {:else if $pageData.error}

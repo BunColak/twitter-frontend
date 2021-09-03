@@ -1,0 +1,9 @@
+mutation CreateTweetMutation($content: String!) {
+  insert_tweets_one(
+    object: {
+      content: $content
+    }
+  ) {
+    id
+  }
+}

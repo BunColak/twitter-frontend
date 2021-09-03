@@ -1,5 +1,5 @@
 query HomePageQuery($userId: Int!) {
-  tweets {
+  tweets(order_by: {id: desc}) {
     id
     content
     created_at
